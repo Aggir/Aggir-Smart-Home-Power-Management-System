@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class ElectricityModel {
+class ElectricityModel extends Equatable {
   final bool state;
   final DateTime lastPowerCut;
-  ElectricityModel({
+  const ElectricityModel({
     required this.state,
     required this.lastPowerCut,
   });
@@ -21,7 +21,9 @@ class ElectricityModel {
   factory ElectricityModel.fromMap(Map<String, dynamic> map) {
     return ElectricityModel(
       state: map['state'] as bool,
-      lastPowerCut: (map['lastPowerCut'] as Timestamp).toDate(),
+      lastPowerCut:
+          DateTime.fromMillisecondsSinceEpoch(map['lastPowerCut'] as int)
+              .subtract(const Duration(hours: 2)),
     );
   }
 
@@ -29,4 +31,7 @@ class ElectricityModel {
 
   factory ElectricityModel.fromJson(String source) =>
       ElectricityModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  List<Object?> get props => [state, lastPowerCut];
 }

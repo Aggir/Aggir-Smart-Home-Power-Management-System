@@ -14,6 +14,7 @@ class HistoryWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('history Rebuilt');
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p16),
       child: Column(

@@ -1,6 +1,8 @@
-enum DeviceChnageState {
-  keep,
-  autoTurnOn,
-  autoTurnOff,
-}
 
+
+enum FuelLevelEnum {
+  high,
+  medium,
+  low,
+  empty
+}

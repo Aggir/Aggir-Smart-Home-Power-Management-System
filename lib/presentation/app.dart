@@ -1,6 +1,8 @@
 import 'package:arm_project/presentation/app_router.dart';
 import 'package:arm_project/presentation/screens/no_internet_connection.dart';
+import 'package:arm_project/services/notifications_service.dart';
 import 'package:arm_project/utils/constants.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../logic/blocs/internet/internet_bloc.dart';
@@ -17,6 +19,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    NotificationService().getToken();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

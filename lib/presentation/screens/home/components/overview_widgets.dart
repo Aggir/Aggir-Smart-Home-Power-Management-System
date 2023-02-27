@@ -4,40 +4,22 @@ import 'package:arm_project/presentation/resources/assets_manager.dart';
 import 'package:arm_project/presentation/resources/themes/decorations.dart';
 import 'package:arm_project/presentation/resources/themes/font_manager.dart';
 import 'package:arm_project/presentation/resources/themes/styles_manager.dart';
+import 'package:arm_project/presentation/screens/home/components/custom_switch.dart';
 import 'package:arm_project/presentation/screens/home/components/section_title.dart';
+import 'package:arm_project/utils/extensions.dart';
 import 'package:arm_project/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../../../resources/app_strings.dart';
 import '../../../resources/themes/app_colors.dart';
 
-class OverviewWidgets extends StatefulWidget {
+class OverviewWidgets extends StatelessWidget {
   const OverviewWidgets(this.state, {super.key});
   final HomeSuccess state;
-  @override
-  State<OverviewWidgets> createState() => _OverviewWidgetsState();
-}
 
-class _OverviewWidgetsState extends State<OverviewWidgets> {
-  late final _controller =
-      ValueNotifier<bool>(widget.state.generatorData.autoStart);
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller.addListener(() {
-      setState(() {
-        if (_controller.value) {
-          // _checked = true;
-        } else {
-          // _checked = false;
-        }
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +42,7 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
               childAspectRatio: AppSize.s1,
               crossAxisSpacing: AppSize.s16,
               children: [
-                _overviewCardWidget(_generatorCard()),
+                _overviewCardWidget(_generatorCard(context)),
                 _overviewCardWidget(_fuelLevelCard()),
               ],
             ),
@@ -83,7 +65,7 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
     );
   }
 
-  Widget _generatorCard() {
+  Widget _generatorCard(BuildContext context) {
     return Column(
       children: [
         Row(
@@ -95,22 +77,10 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
               height: AppSize.s60,
               width: AppSize.s60,
             ),
-            AdvancedSwitch(
-              controller: _controller,
-              activeColor: AppColors.pattensBlue,
-              inactiveColor: AppColors.lightGrey,
-              thumb: Container(
-                decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(AppSize.s100)),
-              ),
-              activeChild: const Text(AppStrings.stateOn),
-              inactiveChild: const Text(AppStrings.stateOff),
-              borderRadius:
-                  const BorderRadius.all(Radius.circular(AppSize.s15)),
-              width: AppSize.s50,
-              height: AppSize.s25,
-            ),
+            CustomSwitch(value: state.generatorData.autoStart, function: (value){
+              BlocProvider.of<HomeCubit>(context)
+          .changeGeneratorAutoStartValue(value);
+            })
           ],
         ),
         Expanded(
@@ -124,7 +94,7 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
                 ),
               ),
               Text(
-                getState(widget.state.generatorData.state),
+                getState(state.generatorData.state),
                 style: getRegularStyle(
                     color: AppColors.whiteWithOpacity50,
                     fontSize: FontSize.s16),
@@ -135,7 +105,6 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
       ],
     );
   }
-
   Widget _fuelLevelCard() {
     return Container(
       width: AppSize.s140,
@@ -149,7 +118,7 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
         children: [
           Center(
             child: Text(
-              '${widget.state.generatorData.fuelLevel}%',
+              state.generatorData.fuelLevel.getString(),
               style: getExtraBoldStyle(
                   color: AppColors.primary, fontSize: FontSize.s18),
             ),
@@ -167,7 +136,7 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
               RadialAxis(
                 pointers: <GaugePointer>[
                   RangePointer(
-                    value: widget.state.generatorData.fuelLevel.toDouble(),
+                    value: state.generatorData.fuelLevel.getPercentage(),
                     cornerStyle: CornerStyle.bothCurve,
                     color: AppColors.primary,
                     width: 0.2,
@@ -190,11 +159,5 @@ class _OverviewWidgetsState extends State<OverviewWidgets> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:arm_project/utils/enums.dart';
+import 'package:equatable/equatable.dart';
 
-class GeneratorModel {
+class GeneratorModel extends Equatable {
   final bool state;
   final bool autoStart;
-  final int fuelLevel;
-  
-  GeneratorModel({
+  final FuelLevelEnum fuelLevel;
+
+  const GeneratorModel({
     required this.state,
     required this.autoStart,
     required this.fuelLevel,
@@ -25,11 +27,16 @@ class GeneratorModel {
     return GeneratorModel(
       state: map['state'] as bool,
       autoStart: map['autoStart'] as bool,
-      fuelLevel: map['fuelLevel'] as int,
+      fuelLevel: FuelLevelEnum.values
+          .byName((map['fuelLevel'] as String).toLowerCase()),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory GeneratorModel.fromJson(String source) => GeneratorModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory GeneratorModel.fromJson(String source) =>
+      GeneratorModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  List<Object?> get props => [state, autoStart, fuelLevel];
 }

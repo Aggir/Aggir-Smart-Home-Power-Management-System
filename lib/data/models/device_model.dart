@@ -2,16 +2,13 @@
 import 'dart:convert';
 
 import 'package:arm_project/utils/enums.dart';
+import 'package:equatable/equatable.dart';
 
-class DeviceModel {
-  final int id;
-  final String name;
-  final DeviceChnageState electricity;
-  final DeviceChnageState generator;
+class DeviceModel extends Equatable {
+  final bool electricity;
+  final bool generator;
   final bool state;
-  DeviceModel({
-    required this.id,
-    required this.name,
+  const DeviceModel({
     required this.electricity,
     required this.generator,
     required this.state,
@@ -19,25 +16,27 @@ class DeviceModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'electricity': electricity.index,
-      'generator': generator.index,
+      'electricity': electricity,
+      'generator': generator,
       'state': state,
     };
   }
 
   factory DeviceModel.fromMap(Map<String, dynamic> map) {
     return DeviceModel(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      electricity: DeviceChnageState.values[map['electricity'] as int],
-      generator: DeviceChnageState.values[map['generator'] as int],
+      electricity:
+          (map['electricity'] as bool),
+      generator:
+         (map['generator'] as bool),
       state: map['state'] as bool,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DeviceModel.fromJson(String source) => DeviceModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DeviceModel.fromJson(String source) =>
+      DeviceModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  List<Object?> get props => [electricity, generator, state];
 }

@@ -37,9 +37,24 @@ ThemeData appThemeLight() => ThemeData(
             getSemiBoldStyle(color: AppColors.white, fontSize: FontSize.s16),
         titleSmall: getSemiBoldStyle(
             color: AppColors.whiteWithOpacity50, fontSize: FontSize.s14),
+        labelLarge:
+            getMediumStyle(color: AppColors.black, fontSize: FontSize.s18),
         labelMedium:
             getSemiBoldStyle(color: AppColors.black, fontSize: FontSize.s14),
         labelSmall: getRegularStyle(
             color: AppColors.blackWithOpacity50, fontSize: FontSize.s12),
+        bodyMedium:
+            getRegularStyle(color: AppColors.black, fontSize: FontSize.s14),
       ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.white,
+        elevation: AppSize.s5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(AppSize.s10),
+            topRight: Radius.circular(AppSize.s10),
+          ),
+        ),
+      ),
+      
     );

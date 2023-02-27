@@ -23,4 +23,9 @@ class AppStrings {
   static const String totalHours = "Total Hours";
   static const String genericError = "Something went wrong!";
   static const String keep = "Keep";
+  static const String high = "High";
+  static const String medium = "Medium";
+  static const String low = "Low";
+  static const String empty = "Empty";
+  static const String automaticSwitch = "Automatic Switch";
 }

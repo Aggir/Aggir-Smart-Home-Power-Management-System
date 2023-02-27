@@ -1,13 +1,20 @@
+import 'package:arm_project/data/dataproviders/firebase_dataprovider.dart';
 import 'package:arm_project/logic/cubits/home/home_cubit.dart';
 import 'package:arm_project/presentation/resources/app_values.dart';
 import 'package:arm_project/presentation/resources/assets_manager.dart';
 import 'package:arm_project/presentation/resources/themes/app_colors.dart';
 import 'package:arm_project/presentation/resources/themes/decorations.dart';
+import 'package:arm_project/presentation/resources/themes/styles_manager.dart';
+import 'package:arm_project/presentation/screens/home/components/custom_switch.dart';
 import 'package:arm_project/presentation/screens/home/components/section_title.dart';
+import 'package:arm_project/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:arm_project/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../utils/constants.dart';
 import '../../../resources/app_strings.dart';
+import 'custom_switch_listtile.dart';
 
 class DevicesWidgets extends StatelessWidget {
   const DevicesWidgets(this.state, {super.key});
@@ -22,7 +29,9 @@ class DevicesWidgets extends StatelessWidget {
         'color': AppColors.secondary,
         'state': state.deviceData.state,
         'image': ImageAssets.whiteLed,
-        'onTap': _led1Settings
+        'onTap': () {
+          _led1Function(context);
+        }
       },
       {
         'title': '${AppStrings.testLed}2',
@@ -76,24 +85,6 @@ class DevicesWidgets extends StatelessWidget {
         )
       ],
     );
-  }
-
-  //todo: change to dynamic function
-  void _led1Settings() {
-    var data = state.deviceData;
-    _showBottomSheet(
-      name: data.name,
-      electricity: data.electricity,
-      generator: data.generator,
-    );
-  }
-
-  void _showBottomSheet({
-    required String name,
-    required DeviceChnageState electricity,
-    required DeviceChnageState generator,
-  }) {
-    
   }
 
   Widget _deviceCardWidget({
@@ -160,5 +151,47 @@ class DevicesWidgets extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  //todo: change to dynamic function
+  void _led1Function(BuildContext context) async {
+    var data = state.deviceData;
+    _showBottomSheet(
+      context: context,
+      name: AppStrings.testLed,
+      electricity: data.electricity,
+      generator: data.generator,
+    );
+  }
+
+  void _showBottomSheet({
+    required BuildContext context,
+    required String name,
+    required bool electricity,
+    required bool generator,
+  }) {
+    CustomBottomSheet.open(
+        context: context,
+        children: [
+          Text(
+            '${AppStrings.automaticSwitch}:',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          CustomSwitchListTile(
+              title: AppStrings.electricity,
+              value: electricity,
+              function: (value) {
+                BlocProvider.of<HomeCubit>(context)
+                    .changeLed1ElectricityAutoStart(value);
+              }),
+          CustomSwitchListTile(
+              title: AppStrings.generator,
+              value: generator,
+              function: (value) {
+                BlocProvider.of<HomeCubit>(context)
+                    .changeLed1GeneratorAutoStart(value);
+              }),
+        ],
+        titleText: name);
   }
 }

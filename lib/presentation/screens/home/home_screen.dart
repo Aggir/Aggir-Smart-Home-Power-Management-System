@@ -5,13 +5,10 @@ import 'package:arm_project/presentation/screens/home/components/electricity_det
 import 'package:arm_project/presentation/widgets/background_gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../logic/cubits/home/home_cubit.dart';
 import 'components/history_widgets.dart';
 import 'components/devices_widgets.dart';
 import 'components/overview_widgets.dart';
-
-part 'components/custom_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    // BlocProvider.of<HomeCubit>(context).getData();
     BlocProvider.of<HomeCubit>(context).getData();
     super.initState();
   }
@@ -64,5 +62,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void notificationButton() {}
+  _appBar(BuildContext context) => AppBar(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        title: Row(
+          children: [
+            Image.asset(
+              ImageAssets.microchip,
+              height: AppSize.s40,
+              width: AppSize.s40,
+            ),
+            const SizedBox(
+              width: AppSize.s10,
+            ),
+            Text(
+              AppStrings.homeScreenAppBarTitle,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      );
 }
