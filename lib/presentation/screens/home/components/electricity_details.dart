@@ -59,7 +59,7 @@ class ElectricityDetails extends StatelessWidget {
             ),
             Column(
               children: [
-                Text('${AppStrings.lastPowerCut}: $dateTime',
+                Text('${AppStrings.lastPowerChange}: $dateTime',
                     style: Theme.of(context).textTheme.titleMedium),
                 Text(timeago.format(state.electricityData.lastPowerCut),
                     style: Theme.of(context).textTheme.titleSmall),

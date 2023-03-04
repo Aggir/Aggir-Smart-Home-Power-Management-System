@@ -5,7 +5,7 @@ class AppStrings {
   static const String devices = "Devices";
   static const String history = "History";
   static const String electricity = "Electricity";
-  static const String lastPowerCut = "Last Power Cut";
+  static const String lastPowerChange = "Last Power Change";
   static const String generator = "Generator";
   static const String stateOff = "OFF";
   static const String stateOn = "ON";
