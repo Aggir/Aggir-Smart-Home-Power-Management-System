@@ -1,6 +1,6 @@
 import 'package:arm_project/logic/cubits/home/home_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:get_time_ago/get_time_ago.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:intl/intl.dart';
 
 import '../../../../utils/functions.dart';
@@ -61,7 +61,7 @@ class ElectricityDetails extends StatelessWidget {
               children: [
                 Text('${AppStrings.lastPowerCut}: $dateTime',
                     style: Theme.of(context).textTheme.titleMedium),
-                Text(GetTimeAgo.parse(state.electricityData.lastPowerCut),
+                Text(timeago.format(state.electricityData.lastPowerCut),
                     style: Theme.of(context).textTheme.titleSmall),
               ],
             ),

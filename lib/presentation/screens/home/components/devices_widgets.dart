@@ -4,15 +4,11 @@ import 'package:arm_project/presentation/resources/app_values.dart';
 import 'package:arm_project/presentation/resources/assets_manager.dart';
 import 'package:arm_project/presentation/resources/themes/app_colors.dart';
 import 'package:arm_project/presentation/resources/themes/decorations.dart';
-import 'package:arm_project/presentation/resources/themes/styles_manager.dart';
-import 'package:arm_project/presentation/screens/home/components/custom_switch.dart';
 import 'package:arm_project/presentation/screens/home/components/section_title.dart';
 import 'package:arm_project/presentation/widgets/custom_bottom_sheet.dart';
-import 'package:arm_project/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../utils/constants.dart';
 import '../../../resources/app_strings.dart';
 import 'custom_switch_listtile.dart';
 
@@ -30,22 +26,27 @@ class DevicesWidgets extends StatelessWidget {
         'state': state.deviceData.state,
         'image': ImageAssets.whiteLed,
         'onTap': () {
-          _led1Function(context);
-        }
+          _led1SwitchState(context, state.deviceData.state);
+        },
+        'onLongPress': () {
+          _led1Settings(context);
+        },
       },
       {
         'title': '${AppStrings.testLed}2',
         'color': AppColors.mauve,
         'state': false,
         'image': ImageAssets.whiteLed,
-        'onTap': null
+        'onTap': null,
+        'onLongPress': null,
       },
       {
         'title': '${AppStrings.testLed}3',
         'color': AppColors.lightYellow,
         'state': false,
         'image': ImageAssets.yellowLed,
-        'onTap': null
+        'onTap': null,
+        'onLongPress': null,
       },
     ];
 
@@ -79,6 +80,7 @@ class DevicesWidgets extends StatelessWidget {
                     color: devices[index]['color'],
                     image: devices[index]['image'],
                     onTap: devices[index]['onTap'],
+                    onLongPress: devices[index]['onLongPress'],
                   ));
             },
           ),
@@ -94,6 +96,7 @@ class DevicesWidgets extends StatelessWidget {
     required Color color,
     required String image,
     void Function()? onTap,
+    void Function()? onLongPress,
   }) {
     const double cardWidth = AppSize.s120;
     const double cardHeight = AppSize.s120;
@@ -116,6 +119,7 @@ class DevicesWidgets extends StatelessWidget {
               child: InkWell(
                 radius: AppSize.s25,
                 onTap: onTap,
+                onLongPress: onLongPress,
                 child: Padding(
                   padding: const EdgeInsets.all(AppPadding.p8),
                   child: Column(
@@ -141,7 +145,7 @@ class DevicesWidgets extends StatelessWidget {
           ),
         ),
         // disabled button function
-        if (onTap == null)
+        if (onLongPress == null || onTap == null)
           Container(
             width: cardWidth,
             height: cardHeight,
@@ -154,7 +158,7 @@ class DevicesWidgets extends StatelessWidget {
   }
 
   //todo: change to dynamic function
-  void _led1Function(BuildContext context) async {
+  void _led1Settings(BuildContext context) async {
     var data = state.deviceData;
     _showBottomSheet(
       context: context,
@@ -162,6 +166,10 @@ class DevicesWidgets extends StatelessWidget {
       electricity: data.electricity,
       generator: data.generator,
     );
+  }
+
+  void _led1SwitchState(BuildContext context, bool state) {
+    BlocProvider.of<HomeCubit>(context).switchLed1State(!state);
   }
 
   void _showBottomSheet({

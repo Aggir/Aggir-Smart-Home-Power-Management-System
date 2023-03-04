@@ -1,3 +1,4 @@
+import 'package:arm_project/utils/constants.dart';
 import 'package:arm_project/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -6,24 +7,26 @@ import '../../../resources/app_strings.dart';
 
 class CustomChart extends StatelessWidget {
   const CustomChart(
-      {required this.weekValues,
+      {required this.weekValuesMap,
       required this.color,
       required this.selectedColor,
+      required this.title,
       super.key});
 
   final Color color;
   final Color selectedColor;
-  final List<double?> weekValues;
+  final String title;
+  final Map<String, double> weekValuesMap;
 
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
-        title: ChartTitle(text: AppStrings.thisWeek),
+        title: ChartTitle(text: title),
         primaryXAxis:
             CategoryAxis(labelStyle: Theme.of(context).textTheme.labelSmall),
         series: <ChartSeries>[
           ColumnSeries<ChartData, String>(
-              dataSource: _chartDataWeekDays(weekValues),
+              dataSource: _chartDataWeekDays(weekValuesMap),
               color: color,
               xValueMapper: (ChartData data, _) => data.x,
               yValueMapper: (ChartData data, _) => data.y,
@@ -47,22 +50,15 @@ class CustomChart extends StatelessWidget {
   }
 
   //todo: make this fucntion more flexible
-  List<ChartData> _chartDataWeekDays(List<double?> weekValues) {
-    final List<String> weekDaysShort = [
-      AppStrings.saturdayShort,
-      AppStrings.sundayShort,
-      AppStrings.mondayShort,
-      AppStrings.tuesdayShort,
-      AppStrings.wednesdayShort,
-      AppStrings.thursdayShort,
-      AppStrings.fridayShort,
-    ];
-    int index = 0;
+  List<ChartData> _chartDataWeekDays(Map<String, double> weekValues) {
     List<ChartData> chartData = [];
-    for (String weekDayShort in weekDaysShort) {
-      chartData.add(ChartData(weekDayShort,
-          weekValues.length - 1 < index ? null : weekValues[index]));
-      index++;
+    for (int i = 6; i >= 0; i--) {
+      chartData.add(ChartData(
+          weekDaysShort[
+              getWeekDayIndex(DateTime.now().subtract(Duration(days: i))) - 1],
+          weekValues[weekDaysShort[
+              getWeekDayIndex(DateTime.now().subtract(Duration(days: i))) -
+                  1]]));
     }
     return chartData;
   }

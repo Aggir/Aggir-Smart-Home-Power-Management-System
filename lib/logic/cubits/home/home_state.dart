@@ -11,10 +11,12 @@ class HomeSuccess extends HomeState {
   final ElectricityModel electricityData;
   final GeneratorModel generatorData;
   final DeviceModel deviceData;
+  final List<HistoryModel> historyData;
   HomeSuccess({
     required this.electricityData,
     required this.generatorData,
     required this.deviceData,
+    required this.historyData,
   });
 }
 

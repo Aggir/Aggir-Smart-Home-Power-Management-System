@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         OverviewWidgets(state),
                         DevicesWidgets(state),
-                        HistoryWidgets(),
+                        HistoryWidgets(state),
                       ],
                     ),
                   ),

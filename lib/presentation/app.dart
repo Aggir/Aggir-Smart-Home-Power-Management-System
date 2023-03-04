@@ -1,5 +1,6 @@
+import 'package:arm_project/logic/cubits/home/home_cubit.dart';
 import 'package:arm_project/presentation/app_router.dart';
-import 'package:arm_project/presentation/screens/no_internet_connection.dart';
+import 'package:arm_project/presentation/screens/no_internet_connection_screen.dart';
 import 'package:arm_project/services/notifications_service.dart';
 import 'package:arm_project/utils/constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -27,8 +28,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => InternetBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => InternetBloc()),
+        BlocProvider(create: (context) => HomeCubit()),
+      ],
       child: MaterialApp(
         title: kAppName,
         debugShowCheckedModeBanner: false,

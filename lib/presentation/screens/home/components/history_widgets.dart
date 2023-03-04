@@ -1,4 +1,6 @@
+import 'package:arm_project/data/models/week_history_model.dart';
 import 'package:arm_project/logic/cubits/home/home_cubit.dart';
+import 'package:arm_project/presentation/app_router.dart';
 import 'package:arm_project/presentation/resources/app_values.dart';
 import 'package:arm_project/presentation/resources/themes/app_colors.dart';
 import 'package:arm_project/presentation/resources/themes/decorations.dart';
@@ -10,11 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../resources/app_strings.dart';
 
 class HistoryWidgets extends StatelessWidget {
-  const HistoryWidgets({super.key});
-
+  const HistoryWidgets(this.state, {super.key});
+  final HomeSuccess state;
   @override
   Widget build(BuildContext context) {
-    print('history Rebuilt');
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p16),
       child: Column(
@@ -29,9 +30,10 @@ class HistoryWidgets extends StatelessWidget {
   }
 
   Widget _historyCardWidget(BuildContext context) {
-    final List<double?> values = [7, 14, 8, 11, 0, 2];
-    const int powerCuts = 4;
-    const int totalHours = 42;
+    final WeekHistoryModel weekHistoryModel =
+        BlocProvider.of<HomeCubit>(context).getWeekHistory(state.historyData);
+    int powerCuts = weekHistoryModel.totalPowerCuts;
+    int totalMinutes = weekHistoryModel.totalCutMinutes;
     return Container(
       width: MediaQuery.of(context).size.width - 32,
       decoration: BoxDecoration(
@@ -40,26 +42,27 @@ class HistoryWidgets extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSize.s30),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(AppPadding.p8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomChart(
-              weekValues: values,
+              weekValuesMap: weekHistoryModel.weekData,
               color: AppColors.pattensBlue,
               selectedColor: AppColors.primary,
+              title: AppStrings.thisWeek,
             ),
             const SizedBox(height: AppSize.s4),
-            const Text('${AppStrings.totalPowerCuts}: $powerCuts'),
+            Text('${AppStrings.totalPowerCuts}: $powerCuts'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('${AppStrings.totalHours}: $totalHours'),
+                Text('${AppStrings.totalMinutes}: $totalMinutes'),
                 TextButton(
                     onPressed: () {
                       _showMoreButton(context);
                     },
-                    child: Text(AppStrings.showMore))
+                    child: const Text(AppStrings.showMore))
               ],
             ),
           ],
@@ -68,7 +71,9 @@ class HistoryWidgets extends StatelessWidget {
     );
   }
 
-  _showMoreButton(BuildContext context) {
-    BlocProvider.of<HomeCubit>(context).getData();
+  void _showMoreButton(BuildContext context) {
+
+    Navigator.of(context)
+        .pushNamed(Routes.historyRoute, arguments: state.historyData);
   }
 }

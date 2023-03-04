@@ -20,7 +20,7 @@ class AppStrings {
   static const String fridayShort = "FRI";
   static const String showMore = "Show more";
   static const String totalPowerCuts = "Total Power Cuts";
-  static const String totalHours = "Total Hours";
+  static const String totalMinutes = "Total Minutes";
   static const String genericError = "Something went wrong!";
   static const String keep = "Keep";
   static const String high = "High";
@@ -28,4 +28,5 @@ class AppStrings {
   static const String low = "Low";
   static const String empty = "Empty";
   static const String automaticSwitch = "Automatic Switch";
+  static const String now = "Now";
 }

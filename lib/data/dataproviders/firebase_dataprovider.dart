@@ -33,4 +33,11 @@ class FirebaseDataProvider {
         .child(kLed1Auto)
         .update({kGenerator: value});
   }
+  void switchLed1State(bool value){
+     _firebaseDatabase
+        .ref()
+        .child(kLed1)
+        .update({kState: value});
+  }
+  
 }

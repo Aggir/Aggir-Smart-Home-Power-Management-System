@@ -25,7 +25,7 @@ ThemeData appThemeLight() => ThemeData(
       ),
       iconButtonTheme: IconButtonThemeData(
           style: IconButton.styleFrom(
-              foregroundColor: AppColors.grey, iconSize: 28)),
+              foregroundColor: AppColors.white, iconSize: 28)),
       textTheme: TextTheme(
         displaySmall:
             getBoldStyle(color: AppColors.white, fontSize: FontSize.s28),
@@ -56,5 +56,4 @@ ThemeData appThemeLight() => ThemeData(
           ),
         ),
       ),
-      
     );
